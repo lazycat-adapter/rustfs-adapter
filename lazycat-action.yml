@@ -1,0 +1,57 @@
+version: 2
+
+project:
+  root: .
+  build_config: lzc-build.yml
+  package_file: package.yml
+  output: dist/white.lazycat.app.rustfs.lpk
+  target_arch: amd64
+
+source:
+  kind: git
+  url: https://github.com/rustfs/rustfs.git
+  select:
+    strategy: semver-tag
+    # RustFS publishes stable tags without a leading v. The tag pattern
+    # deliberately excludes beta/rc/preview tags and rolling aliases.
+    tag_regex: '^[0-9]+\.[0-9]+\.[0-9]+$'
+    exclude_regex: '(?i)(alpha|beta|rc|preview)'
+
+changelog:
+  mode: github-release
+  git_url: https://github.com/rustfs/rustfs.git
+
+state:
+  file: .lazycat-action.lock.yml
+
+update:
+  strategy: publish
+  allow_downgrade: false
+
+build:
+  run_buildscript: false
+  prepare:
+    mode: images
+
+images:
+  - id: rustfs
+    target: service
+    service: rustfs
+    source: docker.io/rustfs/rustfs:{source_version}
+    delivery:
+      mode: lazycat
+      copy_timeout: 30m
+      copy_idle_timeout: 10m
+
+stores:
+  official:
+    enabled: true
+    create_if_missing: false
+    skip_if_version_exists: true
+    continue_if_newer_version: true
+    changelog_locales: [zh, en]
+    retry:
+      enabled: true
+      max_attempts: 5
+      initial_delay: 2s
+      max_delay: 30s

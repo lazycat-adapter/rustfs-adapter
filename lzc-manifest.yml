@@ -1,0 +1,58 @@
+usage: |
+  RustFS 控制台地址：https://{{ .S.AppDomain }}
+  默认管理员账号为 rustfsadmin，默认密码为 rustfsadmin；首次登录后请立即修改密码。
+  S3 API 通过应用的 TCP 9000 入口提供；数据持久保存在 /lzcapp/var/data。
+application:
+  subdomain: rustfs
+  background_task: true
+  multi_instance: false
+  public_path:
+    - /api/public
+  ingress:
+    - protocol: tcp
+      port: 9000
+      service: rustfs
+  routes:
+    - /=http://rustfs.white.lazycat.app.rustfs.lzcapp:9001
+services:
+  rustfs:
+    # The shared action replaces this placeholder with the copied, tested
+    # registry.lazycat.cloud image before a real LPK is delivered.
+    # upstream: docker.io/rustfs/rustfs:1.0.7@sha256:d56a18b722567850f35bb11f9767d145809e5a98548d4fd3b20fd77318db8774
+    image: registry.lazycat.cloud/white/rustfs/rustfs:pending
+    run_as: "10001:10001"
+    environment:
+      RUSTFS_VOLUMES: /data
+      RUSTFS_ADDRESS: 0.0.0.0:9000
+      RUSTFS_CONSOLE_ADDRESS: 0.0.0.0:9001
+      RUSTFS_CONSOLE_ENABLE: "true"
+      RUSTFS_CONSOLE_CORS_ALLOWED_ORIGINS: "*"
+      RUSTFS_ROOT_USER: rustfsadmin
+      RUSTFS_ROOT_PASSWORD: rustfsadmin
+      RUSTFS_OBS_LOGGER_LEVEL: warn
+      RUSTFS_OBS_LOG_DIRECTORY: /logs
+    binds:
+      - /lzcapp/var/data:/data
+      - /lzcapp/var/config:/config/rustfs
+    setup_script: |
+      #!/bin/sh
+      set -eu
+
+      # The old 1.0.0 package could leave the bind mount owned by root.
+      # Repair ownership once before the official image starts as UID 10001.
+      marker=/data/.lazycat-rustfs-permissions-v1
+      if [ ! -e "$marker" ]; then
+        chown -R 10001:10001 /data /config/rustfs 2>/dev/null || true
+        touch "$marker"
+        chown 10001:10001 "$marker" 2>/dev/null || true
+      fi
+    healthcheck:
+      test:
+        - CMD
+        - sh
+        - -ec
+        - curl -fsS http://127.0.0.1:9000/health && curl -fsS http://127.0.0.1:9001/rustfs/console/health
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s

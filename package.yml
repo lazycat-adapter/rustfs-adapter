@@ -1,0 +1,26 @@
+package: white.lazycat.app.rustfs
+version: 1.0.0
+name: RustFS
+description: 高性能、兼容 S3 API 的分布式对象存储系统。
+homepage: https://rustfs.com
+author: RustFS Team
+license: Apache-2.0
+min_os_version: 1.5.0
+unsupported_platforms:
+  - android
+  - ios
+locales:
+  zh:
+    name: RustFS
+    description: 高性能、兼容 S3 API 的分布式对象存储系统。
+    usage: |
+      RustFS 控制台地址：https://{{ .S.AppDomain }}
+      默认管理员账号为 rustfsadmin，默认密码为 rustfsadmin；首次登录后请立即修改密码。
+      S3 API 通过应用的 TCP 9000 入口提供；数据持久保存在 /lzcapp/var/data。
+  en:
+    name: RustFS
+    description: High-performance distributed object storage compatible with the S3 API.
+    usage: |
+      RustFS console: https://{{ .S.AppDomain }}
+      The default administrator is rustfsadmin / rustfsadmin. Change the password after the first login.
+      The S3 API is exposed through TCP port 9000. Data is persisted in /lzcapp/var/data.
