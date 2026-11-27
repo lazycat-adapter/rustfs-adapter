@@ -6,7 +6,7 @@ source:
     revision: 03c8a1733d57a6ffc3095f63f765d396f5d04a3a
     tag: 1.0.7
 fingerprint: sha256:5cabbf7ff256fd59aeee45ce037f664d530b8817c1bf749a030eb3fe499a75ab
-status: packaged
+status: submitted
 images:
     - id: rustfs
       source_ref: docker.io/rustfs/rustfs:1.0.7@sha256:d56a18b722567850f35bb11f9767d145809e5a98548d4fd3b20fd77318db8774
@@ -56,3 +56,18 @@ application:
 
         **Full Changelog**: https://github.com/rustfs/rustfs/compare/1.0.6...1.0.7
 packaged_at: 2026-11-27T02:45:45.868039921Z
+reviews:
+    - id: 24049
+      source:
+        kind: git
+        version: 1.0.7
+        ref: refs/tags/1.0.7
+        revision: 03c8a1733d57a6ffc3095f63f765d396f5d04a3a
+        tag: 1.0.7
+      fingerprint: sha256:5cabbf7ff256fd59aeee45ce037f664d530b8817c1bf749a030eb3fe499a75ab
+      application_version: 1.0.7
+      lpk_sha256: a020d744c4ed267f0fe4d1a4755d0f8d97e37f4687643b360adfeb166da668b9
+      status: waiting
+      created_at: 2026-11-27T02:46:05.478Z
+      submitted_at: 2026-11-27T02:46:05.633374614Z
+      checked_at: 2026-11-27T02:46:05.633375388Z
