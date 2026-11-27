@@ -16,8 +16,8 @@ application:
     - /=http://rustfs.white.lazycat.app.rustfs.lzcapp:9001
 services:
   rustfs:
-    # upstream: docker.io/rustfs/rustfs:latest@sha256:b7061d5294a109bf321cf95809dcd7e5c9052823cc9a9e7a3fda30531b8d0655
-    image: registry.lazycat.cloud/white/rustfs/rustfs:f136ca8506889dc1
+    # upstream: docker.io/rustfs/rustfs:1.0.7@sha256:d56a18b722567850f35bb11f9767d145809e5a98548d4fd3b20fd77318db8774
+    image: registry.lazycat.cloud/peter/rustfs/rustfs:53ef4978a9195acf
     user: "10001:10001"
     environment:
       RUSTFS_VOLUMES: /data

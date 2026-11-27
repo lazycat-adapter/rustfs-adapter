@@ -1,5 +1,5 @@
 package: white.lazycat.app.rustfs
-version: 1.0.0
+version: 1.0.7
 name: RustFS
 description: 高性能、兼容 S3 API 的分布式对象存储系统。
 homepage: https://rustfs.com
