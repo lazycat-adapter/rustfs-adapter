@@ -16,11 +16,9 @@ application:
     - /=http://rustfs.white.lazycat.app.rustfs.lzcapp:9001
 services:
   rustfs:
-    # The shared action replaces this placeholder with the copied, tested
-    # registry.lazycat.cloud image before a real LPK is delivered.
-    # upstream: docker.io/rustfs/rustfs:1.0.7@sha256:d56a18b722567850f35bb11f9767d145809e5a98548d4fd3b20fd77318db8774
-    image: registry.lazycat.cloud/white/rustfs/rustfs:pending
-    run_as: "10001:10001"
+    # upstream: docker.io/rustfs/rustfs:latest@sha256:b7061d5294a109bf321cf95809dcd7e5c9052823cc9a9e7a3fda30531b8d0655
+    image: registry.lazycat.cloud/white/rustfs/rustfs:f136ca8506889dc1
+    user: "10001:10001"
     environment:
       RUSTFS_VOLUMES: /data
       RUSTFS_ADDRESS: 0.0.0.0:9000
@@ -42,16 +40,16 @@ services:
       # Repair ownership once before the official image starts as UID 10001.
       marker=/data/.lazycat-rustfs-permissions-v1
       if [ ! -e "$marker" ]; then
-        chown -R 10001:10001 /data /config/rustfs 2>/dev/null || true
+        chown -R 10001:10001 /data /config/rustfs
         touch "$marker"
-        chown 10001:10001 "$marker" 2>/dev/null || true
+        chown 10001:10001 "$marker"
       fi
     healthcheck:
       test:
         - CMD
         - sh
         - -ec
-        - curl -fsS http://127.0.0.1:9000/health && curl -fsS http://127.0.0.1:9001/rustfs/console/health
+        - curl -fsS http://127.0.0.1:9000/health/ready && curl -fsS http://127.0.0.1:9001/rustfs/console/health
       interval: 30s
       timeout: 10s
       retries: 5

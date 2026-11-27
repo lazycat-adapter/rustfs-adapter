@@ -19,6 +19,8 @@ RustFS 官方镜像使用 UID/GID `10001:10001`。升级第一次启动时，set
 
 默认账号密码沿用旧应用的 `rustfsadmin / rustfsadmin`，首次登录后请立即修改。
 
+定时任务每天北京时间 10:17 检查上游，有更新时自动打包并送审。
+
 ## 自动流程
 
 推送配置只执行检查。Actions 的手动运行默认勾选 `dry-run`，取消勾选后才会进行镜像转存、
@@ -31,7 +33,7 @@ LPK 构建和官方审核提交。组织级 `LZC_API_TOKEN` 需要授权给本�
 ```bash
 python3 -m unittest discover -s tests -v
 lzc-cli project build
-lzc-cli lpk lint dist/white.lazycat.app.rustfs.lpk
+lzc-cli lpk lint dist/white.lazycat.app.rustfs-v*.lpk
 ```
 
 ## 来源

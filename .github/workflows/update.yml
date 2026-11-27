@@ -1,5 +1,5 @@
 name: Update RustFS for LazyCat
-run-name: ${{ (github.event_name == 'push' || (github.event_name == 'schedule' && vars.LAZYCAT_AUTO_PUBLISH != 'true') || (github.event_name == 'workflow_dispatch' && inputs.dry-run)) && 'LazyCat [check only]' || 'LazyCat [build and submit]' }}
+run-name: ${{ (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.dry-run)) && 'LazyCat [check only]' || 'LazyCat [build and submit]' }}
 
 on:
   push:
@@ -45,7 +45,7 @@ jobs:
       runner: ubuntu-24.04
       toolchains: docker
       enable-qemu: false
-      dry-run: ${{ github.event_name == 'push' || (github.event_name == 'schedule' && vars.LAZYCAT_AUTO_PUBLISH != 'true') || (github.event_name == 'workflow_dispatch' && inputs.dry-run) }}
+      dry-run: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.dry-run) }}
       retry-rejected: ${{ github.event_name == 'workflow_dispatch' && inputs.retry-rejected || false }}
       force-rebuild: ${{ github.event_name == 'workflow_dispatch' && inputs.force-rebuild || false }}
     secrets: inherit

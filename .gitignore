@@ -1,5 +1,4 @@
 dist/
 .lazycat-action/
-.lazycat-action.lock.yml
 __pycache__/
 *.pyc

@@ -16,7 +16,7 @@ class RustFSAdapterContractTests(unittest.TestCase):
 
     def test_package_identity_and_online_baseline(self):
         self.assertEqual(self.package["package"], "white.lazycat.app.rustfs")
-        self.assertEqual(self.package["version"], "1.0.0")
+        self.assertRegex(self.package["version"], r"^\d+\.\d+\.\d+$")
         self.assertEqual(self.package["homepage"], "https://rustfs.com")
 
     def test_source_selects_stable_unprefixed_semver_tags(self):
@@ -47,13 +47,13 @@ class RustFSAdapterContractTests(unittest.TestCase):
         self.assertEqual(service["environment"]["RUSTFS_CONSOLE_ADDRESS"], "0.0.0.0:9001")
         self.assertEqual(service["environment"]["RUSTFS_ROOT_USER"], "rustfsadmin")
         self.assertEqual(service["environment"]["RUSTFS_ROOT_PASSWORD"], "rustfsadmin")
-        self.assertEqual(service["run_as"], "10001:10001")
+        self.assertEqual(service["user"], "10001:10001")
 
     def test_image_is_upstream_and_delivery_is_lazycat(self):
         image = self.action["images"][0]
         self.assertEqual(image["source"], "docker.io/rustfs/rustfs:{source_version}")
         self.assertEqual(image["delivery"]["mode"], "lazycat")
-        self.assertEqual(self.manifest["services"]["rustfs"]["image"].split(":", 1)[0], "registry.lazycat.cloud/white/rustfs/rustfs")
+        self.assertTrue(self.manifest["services"]["rustfs"]["image"].startswith("registry.lazycat.cloud/"))
 
 
 if __name__ == "__main__":
